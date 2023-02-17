@@ -1,0 +1,18 @@
+name: spectrome
+channels:
+  - conda-forge
+dependencies:
+  - python=3 #or any python 3 should work
+  - pip
+  - matplotlib
+  - numpy
+  - scipy
+  - pandas
+  - xarray
+  - seaborn
+  - netCDF4
+  - pip:
+    - python-csv
+    - sklearn
+    - tqdm==4.30.0
+    - jupyter
