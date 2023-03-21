@@ -4,7 +4,7 @@ from sympy import *
 import mpmath as mp
 
 
-def local_stability(parameters):
+def local_stability(parameters,microintensity):
 
     tau_e = parameters["tau_e"]/1000
     tau_i = parameters["tau_i"]/1000

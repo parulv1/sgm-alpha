@@ -1,5 +1,5 @@
 """ running the ntf over a range of frequencies."""
-from ..forward import network_transfer_macrostable_microintensity as nt
+from ..forward import network_transfer_macrostable_microintensity_extrastimulus_neurotransmitter as nt
 import numpy as np
 
 def run_local_coupling_forward(brain, params, freqs):
@@ -25,7 +25,7 @@ def run_local_coupling_forward(brain, params, freqs):
     for freq in freqs:
         w = 2 * np.pi * freq
         freq_model, freq_resp, eig_val, eig_vec = nt.network_transfer_local_alpha(
-            brain, params, w
+            brain, params, w, np.array([]), 1, 1
         )
         frequency_response.append(freq_resp)
         eigenvalues.append(eig_val)

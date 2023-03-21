@@ -10,7 +10,7 @@ from spectrome.optim import sgmglobaloptim, sgmglobaloptim_pearson
 from scipy.optimize import dual_annealing
 from spectrome.brain import Brain
 # from spectrome.forward import localstability_microintensity
-from spectrome.stability import localstability
+from spectrome.stability import localstability_microint_receptors_allrois
 
 import time
 
@@ -43,16 +43,21 @@ rois_with_MEG = np.arange(0,68)
 ind_conn_xr = xr.open_dataarray('../data/individual_connectomes_reordered.nc')
 ind_conn = ind_conn_xr.values
 
+ind_conn_regions = ind_conn_xr["regionx"].values
+
 # ind_psd_xr = xr.open_dataarray(data_dir + '/individual_psd_reordered_smooth.nc')
 ind_psd_xr = xr.open_dataarray('../data/individual_psd_reordered_matlab.nc')
 ind_psd = ind_psd_xr.values
 
-# SC and FA from tinnitus controls
-# sc_fa_tinnitus = loadmat("/protected/data/rajlab1/shared_data/datasets/SGM_fit/tinnitus_controls/SC_FA_tinnitus.mat")
-# SC_template = sc_fa_tinnitus["sc_tinnitus"][0][0][0]
-# FA_template = sc_fa_tinnitus["sc_tinnitus"][0][0][1]
-# SC_FA_template = sc_fa_tinnitus["sc_tinnitus"][0][0][2]
-# SC_volnorm_template = sc_fa_tinnitus["sc_tinnitus"][0][0][4]
+# Load excitatory profile
+ex_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
+ex_template = ex_template_xr.values
+receptor_regions = ex_template_xr["regions"].values
+# Load inhibtory profile
+inh_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
+inh_template = inh_template_xr.values
+
+ind_regions_notpresent = np.where(np.isin(ind_conn_regions, receptor_regions, invert=True))[0]
 
 mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 
@@ -77,50 +82,6 @@ bnds2 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.5), (0.
 bnds3 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.4), (0.001,1.5), (5.0,30.0))
 bnds4 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.3), (0.001,1.5), (5.0,30.0))
 
-# Trying stable bounds for g
-# bnds = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.6), (0.5,1.5), (5.0,30.0))
-
-
-# Initial guesses taue, taui, alpha, speed, gei, gii, beta
-# Changing initial bound of taui from 3 to 5.
-
-# def inguess(i):
-#     if i==0:
-#         allx0 = np.array([12.0, 5.0, 1.0, 5.0, 4.0, 1.0, 6.0])
-#     elif i==1:
-#         allx0 = np.array([18.0, 10.0, 0.5, 10.0, 2.0, 2.0, 10.0])
-#     elif i==2:
-#         allx0 = np.array([6.0, 18.0, 0.1, 18.0, 1.0, 4.0, 18.0])
-#     return allx0
-
-# def inguess(i):
-#     if i==0:
-#         allx0 = np.array([15.0, 10.0, 1.0, 1.0, 8.0, 1.0, 6.0])
-#     if i==1:
-#         allx0 = np.array([25.0, 80.0, 0.5, 5.0, 5.0, 5.0, 15.0])
-#     if i==2:
-#         allx0 = np.array([6.0, 150.0, 0.1, 8.0, 1.0, 8.0, 25.0])
-#     return allx0
-
-# AD initial guesses
-# def inguess(i):
-#     if i==0:
-#         allx0 = np.array([15.0, 10.0, 1.0, 2, 8.0, 1.0, 6.0])
-#     if i==1:
-#         allx0 = np.array([25.0, 80.0, 0.5, 3.5, 5.0, 5.0, 15.0])
-#     if i==2:
-#         allx0 = np.array([6.0, 150.0, 0.1, 5, 1.0, 8.0, 25.0])
-#     return allx0
-
-# For stable g
-# def inguess(i):
-#     if i==0:
-#         allx0 = np.array([15.0, 10.0, 1.0, 2, 0.3, 0.6, 6.0])
-#     if i==1:
-#         allx0 = np.array([25.0, 80.0, 0.5, 3.5, 0.2, 1.0, 15.0])
-#     if i==2:
-#         allx0 = np.array([6.0, 150.0, 0.1, 5, 0.1, 1.2, 25.0])
-#     return allx0
 
 def inguess(i):
     if i==0:
@@ -154,6 +115,13 @@ def optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds):
     # brain.connectome = SC_volnorm_template
     brain.bi_symmetric_c()
     brain.reduce_extreme_dir()
+    
+    brain.connectome = np.delete(brain.connectome,ind_regions_notpresent,0)
+    brain.connectome = np.delete(brain.connectome,ind_regions_notpresent,1)
+    brain.reducedConnectome = np.delete(brain.reducedConnectome,ind_regions_notpresent,0)
+    brain.reducedConnectome = np.delete(brain.reducedConnectome,ind_regions_notpresent,1)
+    brain.distance_matrix = np.delete(brain.distance_matrix,ind_regions_notpresent,0)
+    brain.distance_matrix = np.delete(brain.distance_matrix,ind_regions_notpresent,1)
 #     brain.distance_matrix = get_mean_C(brain.distance_matrix)
 
     opt_res0 = dual_annealing(
@@ -250,20 +218,14 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     
     res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds1)
     
-    data_dir = path.get_data_path()
     # create spectrome brain:
     brain = Brain.Brain()
-    brain.add_connectome(data_dir) # grabs distance matrix
-    # re-ordering for DK atlas and normalizing the connectomes:
-    brain.reorder_connectome(brain.connectome, brain.distance_matrix)
-    brain.bi_symmetric_c()
-    brain.reduce_extreme_dir()
     brain.ntf_params["tau_e"] = res[0]
     brain.ntf_params["tau_i"] = res[1]
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
     
-    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability_microint_receptors_allrois.local_stability(brain.ntf_params,mica_micro_intensity,ex_template,inh_template)
     
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds2)
@@ -273,7 +235,7 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
 
-    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability_microint_receptors_allrois.local_stability(brain.ntf_params,mica_micro_intensity,ex_template,inh_template)
 
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds3)
@@ -283,7 +245,7 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
 
-    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability_microint_receptors_allrois.local_stability(brain.ntf_params,mica_micro_intensity,ex_template,inh_template)
 
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds4)
@@ -309,7 +271,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/microint_tauG.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/microint_receptors.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 

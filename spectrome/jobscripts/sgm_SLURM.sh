@@ -1,10 +1,10 @@
 #!/bin/bash
 #### Specify job name
-#SBATCH -J sgm_cont_microint
+#SBATCH -J microint_receptors
 #### Output file
-#SBATCH -o SP/"%x"_"%j".out
+#SBATCH -o /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".out
 #### Error file
-#SBATCH -e SP/"%x"_"%j".err
+#SBATCH -e /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".err
 #### number of cores 
 #SBATCH -n 36
 #### Specify queue
@@ -29,6 +29,6 @@ nproc --all
 
 which python
 
-python -u ../scripts/SGM_fit_org.py
+python -u ../scripts/SGM_fit_neurotransmitter.py
 
 [[ -n "$SLURM_JOB_ID" ]] && sstat --format="JobID,AveCPU,MaxRSS,MaxPages,MaxDiskRead,MaxDiskWrite" -j "$SLURM_JOB_ID"

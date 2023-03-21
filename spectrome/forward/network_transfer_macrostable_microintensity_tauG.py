@@ -4,7 +4,7 @@ Makes the calculation for a single frequency only. """
 import numpy as np
 from scipy.io import loadmat
 
-def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
+def network_transfer_local_alpha(brain, parameters, w):
     """Network Transfer Function for spectral graph model.
 
     Args:
@@ -55,16 +55,13 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
     nroi = C.shape[0]
 
     K = nroi
-    
-#     Cutting connection to thalamus
-    # C[69,:] = 0
-    # C[:,69] = 0
-    # C[78,:] = 0
-    # C[:,78] = 0
 
     Tau = 0.001 * D / speed
     Cc = C * np.exp(-1j * Tau * w)
 
+    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+
+    
     # Eigen Decomposition of Complex Laplacian Here
     L1 = np.identity(nroi)
 #     Try this normalization
@@ -75,7 +72,21 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
     L2 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + np.spacing(1))
     L = L1 - alpha * np.matmul(np.diag(L2), Cc)
 
-    d, v = np.linalg.eig(L)  
+    FG = np.zeros((nroi,nroi),dtype="complex")
+
+    FG_t = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
+    
+    for i in range(18):
+        FG[68+i,68+i] = FG_t/tauC
+
+    for i in range(68):
+        tauC = parameters["tauC"]*mica_micro_intensity[i]
+        FG_t = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
+        FG[i,i] = FG_t/tauC
+    
+    L_Fg = np.matmul(FG,L)
+    
+    d, v = np.linalg.eig(L_Fg)  
     eig_ind = np.argsort(np.abs(d))  # sorting in ascending order and absolute value
     eig_vec = v[:, eig_ind]  # re-indexing eigen vectors according to sorted index
     eig_val = d[eig_ind]  # re-indexing eigen values with same sorted index
@@ -83,13 +94,8 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
     eigenvalues = np.transpose(eig_val)
     eigenvectors = eig_vec[:, 0:K]
     
-    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 
 #     # Cortical model
-    FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
-    
-    Htotal_micro = np.zeros((86,1),dtype="complex")
-
     Fe = np.divide(1 / tau_e ** 2, (1j * w + 1 / tau_e) ** 2)
     Fi = np.divide(1 / tau_i ** 2, (1j * w + 1 / tau_i) ** 2)
 
@@ -98,31 +104,12 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
     Hid = (1 - (Fe * Fi * gei)/(tau_i * (1j * w + Fe * gee/tau_e)))/(1j * w + Fi * gii/tau_i + (Fe * Fi * gei)**2/(tau_e * tau_i * (1j * w + Fe * gee / tau_e)))
 
     Htotal = Hed + Hid
-    
-    for i in range(18):
-        Htotal_micro[68+i] = Htotal
-
-    for i in range(68):
-        tau_e = parameters["tau_e"]*mica_micro_intensity[i]
-        tau_i = parameters["tau_i"]*mica_micro_intensity[i]
-
-        Fe = np.divide(1 / tau_e ** 2, (1j * w + 1 / tau_e) ** 2)
-        Fi = np.divide(1 / tau_i ** 2, (1j * w + 1 / tau_i) ** 2)
-        
-        # tau_e = parameters["tau_e"]
-        # tau_i = parameters["tau_i"]
-
-        Hed = (1 + (Fe * Fi * gei)/(tau_e * (1j * w + Fi * gii/tau_i)))/(1j * w + Fe * gee/tau_e + (Fe * Fi * gei)**2/(tau_e * tau_i * (1j * w + Fi * gii / tau_i)))
-
-        Hid = (1 - (Fe * Fi * gei)/(tau_i * (1j * w + Fe * gee/tau_e)))/(1j * w + Fi * gii/tau_i + (Fe * Fi * gei)**2/(tau_e * tau_i * (1j * w + Fe * gee / tau_e)))
-
-        Htotal = Hed + Hid
-        
-        Htotal_micro[i] = Htotal
 
 
     #     q1 = (1j * w + 1 / tau_e * Fe * eigenvalues)
-    q1 = (1j * w + 1 / tauC * FG * eigenvalues)
+    # q1 = (1j * w + 1 / tauC * FG * eigenvalues)
+    
+    q1 = (1j * w + eigenvalues)
     qthr = zero_thr * np.abs(q1[:]).max()
     magq1 = np.maximum(np.abs(q1), qthr)
     angq1 = np.angle(q1)
@@ -133,12 +120,14 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
     model_out = 0
     
 
-    for k in range(K):
-        model_out += (frequency_response2[k]) * np.matmul(np.outer(eigenvectors[:, k], np.conjugate(eigenvectors[:, k])),Htotal_micro) 
+#     for k in range(K):
+#         model_out += (frequency_response2[k]) * np.matmul(np.outer(eigenvectors[:, k], np.conjugate(eigenvectors[:, k])),Htotal_micro) 
     
+    for k in range(K):
+        model_out += (frequency_response[k]) * np.outer(eigenvectors[:, k], np.conjugate(eigenvectors[:, k])) 
+    
+    model_out2 = np.linalg.norm(model_out,axis=1)
 
-    model_out2 = np.abs(model_out)
-    model_out2 = model_out2.flatten()
 
     return model_out2, frequency_response2, eigenvalues, eigenvectors
 
