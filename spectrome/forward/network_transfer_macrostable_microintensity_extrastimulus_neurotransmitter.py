@@ -78,12 +78,12 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     eigenvalues = np.transpose(eig_val)
     eigenvectors = eig_vec[:, 0:K]
     
-    mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
     # Load excitatory profile
-    ex_template_xr = xr.open_dataarray('/protected/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
+    ex_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
     ex_template = ex_template_xr.values
     # Load inhibtory profile
-    inh_template_xr = xr.open_dataarray('/protected/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
+    inh_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
     inh_template = inh_template_xr.values
 
 #     # Cortical model
