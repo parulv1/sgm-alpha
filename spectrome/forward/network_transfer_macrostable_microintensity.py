@@ -4,7 +4,7 @@ Makes the calculation for a single frequency only. """
 import numpy as np
 from scipy.io import loadmat
 
-def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
+def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_means):
     """Network Transfer Function for spectral graph model.
 
     Args:
@@ -82,8 +82,10 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
 
     eigenvalues = np.transpose(eig_val)
     eigenvectors = eig_vec[:, 0:K]
+
+    # eigenvectors_inv = np.linalg.inv(eigenvectors)
     
-    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 
 #     # Cortical model
     FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
@@ -135,6 +137,7 @@ def network_transfer_local_alpha(brain, parameters, w, w_var, w_means):
 
     for k in range(K):
         model_out += (frequency_response2[k]) * np.matmul(np.outer(eigenvectors[:, k], np.conjugate(eigenvectors[:, k])),Htotal_micro) 
+        # model_out += (frequency_response2[k]) * np.matmul(np.outer(eigenvectors[:, k], eigenvectors_inv[k, :]),Htotal_micro) 
     
 
     model_out2 = np.abs(model_out)

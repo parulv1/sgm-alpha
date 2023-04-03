@@ -41,8 +41,8 @@ def local_stability(parameters,mica_micro_intensity,ex_template,inh_template):
     for i in range(14):
         gee = ex_template[68+i]
         gii = parameters["gii"]*inh_template[68+i]
-        tau_e = parameters["tau_e"]
-        tau_i = parameters["tau_i"]
+        tau_e = parameters["tau_e"]/1000
+        tau_i = parameters["tau_i"]/1000
 
         fe = float(1/tau_e)
         fi = float(1/tau_i)
