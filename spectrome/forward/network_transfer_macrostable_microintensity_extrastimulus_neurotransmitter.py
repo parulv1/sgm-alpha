@@ -108,8 +108,8 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     for i in range(68):
         gee = ex_template[i]
         gii = parameters["gii"]*inh_template[i]
-        # tau_e = parameters["tau_e"]*mica_micro_intensity[i]
-        # tau_i = parameters["tau_i"]*mica_micro_intensity[i]
+        tau_e = parameters["tau_e"]*mica_micro_intensity[i]
+        tau_i = parameters["tau_i"]*mica_micro_intensity[i]
 
         Fe = np.divide(1 / tau_e ** 2, (1j * w + 1 / tau_e) ** 2)
         Fi = np.divide(1 / tau_i ** 2, (1j * w + 1 / tau_i) ** 2)
