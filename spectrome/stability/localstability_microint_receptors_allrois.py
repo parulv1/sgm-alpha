@@ -17,8 +17,8 @@ def local_stability(parameters,mica_micro_intensity,ex_template,inh_template):
         gee = ex_template[i]
         gii = parameters["gii"]*inh_template[i]
         gei = parameters["gei"]*np.sqrt(ex_template[i]*inh_template[i])
-        # tau_e = parameters["tau_e"]*mica_micro_intensity[i]/1000
-        # tau_i = parameters["tau_i"]*mica_micro_intensity[i]/1000
+        tau_e = parameters["tau_e"]*mica_micro_intensity[i]/1000
+        tau_i = parameters["tau_i"]*mica_micro_intensity[i]/1000
 
         fe = float(1/tau_e)
         fi = float(1/tau_i)
@@ -45,8 +45,8 @@ def local_stability(parameters,mica_micro_intensity,ex_template,inh_template):
         gee = ex_template[68+i]
         gii = parameters["gii"]*inh_template[68+i]
         gei = parameters["gei"]*np.sqrt(ex_template[68+i]*inh_template[68+i])
-        # tau_e = parameters["tau_e"]/1000
-        # tau_i = parameters["tau_i"]/1000
+        tau_e = parameters["tau_e"]/1000
+        tau_i = parameters["tau_i"]/1000
 
         fe = float(1/tau_e)
         fi = float(1/tau_i)
