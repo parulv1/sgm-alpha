@@ -96,7 +96,7 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
     
     for i in range(14):
-        gee = ex_template[68+i]
+        # gee = ex_template[68+i]
         gii = parameters["gii"]*inh_template[68+i]
         gei = parameters["gei"]*np.sqrt(ex_template[68+i]*inh_template[68+i])
         Hed = (1 + (Fe * Fi * gei)/(tau_e * (1j * w + Fi * gii/tau_i)))/(1j * w + Fe * gee/tau_e + (Fe * Fi * gei)**2/(tau_e * tau_i * (1j * w + Fi * gii / tau_i)))
@@ -107,11 +107,11 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
         Htotal_micro[68+i] = Htotal
 
     for i in range(68):
-        gee = ex_template[i]
+        # gee = ex_template[i]
         gii = parameters["gii"]*inh_template[i]
         gei = parameters["gei"]*np.sqrt(ex_template[i]*inh_template[i])
-        tau_e = parameters["tau_e"]*mica_micro_intensity[i]
-        tau_i = parameters["tau_i"]*mica_micro_intensity[i]
+        # tau_e = parameters["tau_e"]*mica_micro_intensity[i]
+        # tau_i = parameters["tau_i"]*mica_micro_intensity[i]
 
         Fe = np.divide(1 / tau_e ** 2, (1j * w + 1 / tau_e) ** 2)
         Fi = np.divide(1 / tau_i ** 2, (1j * w + 1 / tau_i) ** 2)
