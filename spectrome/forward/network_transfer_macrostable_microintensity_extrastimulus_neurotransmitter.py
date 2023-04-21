@@ -4,6 +4,7 @@ Makes the calculation for a single frequency only. """
 import numpy as np
 from scipy.io import loadmat
 import xarray as xr
+import pandas as pd
 
 def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_means):
     """Network Transfer Function for spectral graph model.
@@ -78,14 +79,28 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     eigenvalues = np.transpose(eig_val)
     eigenvectors = eig_vec[:, 0:K]
     
-    mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
     # Load excitatory profile
-    ex_template_xr = xr.open_dataarray('/protected/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
+    ex_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
     ex_template = ex_template_xr.values
     # Load inhibtory profile
-    inh_template_xr = xr.open_dataarray('/protected/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
+    inh_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
     inh_template = inh_template_xr.values
 
+#     Lobes
+
+    lobes = pd.read_excel("/data/rajlab1/shared_data/datasets/RSN/DK_lobes.xlsx",header=None)
+    
+    inh_template_lobe = np.zeros((len(inh_template),1))
+    
+    for i in range(len(inh_template)):
+        if lobes[1][i] == "Frontal" or lobes[1][i] == "Temporal":
+            inh_template_lobe[i] = np.amax(inh_template)
+        else:
+            inh_template_lobe[i] = inh_template[i]
+                
+    inh_template = inh_template_lobe
+    
 #     # Cortical model
     FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
     
