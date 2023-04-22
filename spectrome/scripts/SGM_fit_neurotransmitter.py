@@ -81,7 +81,7 @@ bnds1 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.7), (0.
 bnds2 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.5), (0.001,1.5), (5.0,30.0))
 bnds3 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.4), (0.001,1.5), (5.0,30.0))
 bnds4 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.3), (0.001,1.5), (5.0,30.0))
-
+bnds5 = ((5.0,30.0), (5.0,200.0), (0.1,1.0), (v_lower,v_upper), (0.001,0.24), (0.001,1.3), (5.0,30.0))
 
 def inguess(i):
     if i==0:
@@ -249,6 +249,16 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
 
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds4)
+        
+    brain.ntf_params["tau_e"] = res[0]
+    brain.ntf_params["tau_i"] = res[1]
+    brain.ntf_params["gei"] = res[4]
+    brain.ntf_params["gii"] = res[5]
+
+    st = localstability_microint_receptors_allrois.local_stability(brain.ntf_params,mica_micro_intensity,ex_template,inh_template)
+
+    if st>0:
+        res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds5)
 
     return res
 
@@ -271,7 +281,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/microint_receptors_gei_nogee.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/microint_receptors_gei_nogee_receptorscaled.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 

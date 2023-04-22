@@ -86,20 +86,40 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     # Load inhibtory profile
     inh_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
     inh_template = inh_template_xr.values
+    
+    a = 0.9 
+    b = 1.1
+    
+    mine = np.amin(ex_template)
+    maxe = np.amax(ex_template);
+    
+    ex_template_scaled = np.zeros(ex_template.shape)
+
+    for i in range(len(ex_template)):
+        ex_template_scaled[i] = (b-a)*(ex_template[i]-mine)/(maxe-mine) + a
+    
+    mine = np.amin(inh_template)
+    maxe = np.amax(inh_template);
+    
+    inh_template_scaled = np.zeros(inh_template.shape)
+
+    for i in range(len(inh_template)):
+        inh_template_scaled[i] = (b-a)*(inh_template[i]-mine)/(maxe-mine) + a
 
 #     Lobes
 
-    lobes = pd.read_excel("/data/rajlab1/shared_data/datasets/RSN/DK_lobes.xlsx",header=None)
+#     lobes = pd.read_excel("/data/rajlab1/shared_data/datasets/RSN/DK_lobes.xlsx",header=None)
     
-    inh_template_lobe = np.zeros((len(inh_template),1))
+#     inh_template_lobe = np.zeros((len(inh_template),1))
     
-    for i in range(len(inh_template)):
-        if lobes[1][i] == "Frontal" or lobes[1][i] == "Temporal":
-            inh_template_lobe[i] = np.amax(inh_template)
-        else:
-            inh_template_lobe[i] = inh_template[i]
+#     for i in range(len(inh_template)):
+#         if lobes[1][i] == "Frontal" or lobes[1][i] == "Temporal":
+#             inh_template_lobe[i] = np.amax(inh_template)
+#         else:
+#             inh_template_lobe[i] = inh_template[i]
                 
-    inh_template = inh_template_lobe
+#     inh_template = inh_template_lobe
+
     
 #     # Cortical model
     FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
@@ -112,8 +132,8 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     
     for i in range(14):
         # gee = ex_template[68+i]
-        gii = parameters["gii"]*inh_template[68+i]
-        gei = parameters["gei"]*np.sqrt(ex_template[68+i]*inh_template[68+i])
+        gii = parameters["gii"]*inh_template_scaled[68+i]
+        gei = parameters["gei"]*np.sqrt(ex_template_scaled[68+i]*inh_template_scaled[68+i])
         Hed = (1 + (Fe * Fi * gei)/(tau_e * (1j * w + Fi * gii/tau_i)))/(1j * w + Fe * gee/tau_e + (Fe * Fi * gei)**2/(tau_e * tau_i * (1j * w + Fi * gii / tau_i)))
 
         Hid = (1 - (Fe * Fi * gei)/(tau_i * (1j * w + Fe * gee/tau_e)))/(1j * w + Fi * gii/tau_i + (Fe * Fi * gei)**2/(tau_e * tau_i * (1j * w + Fe * gee / tau_e)))
@@ -123,8 +143,8 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
     for i in range(68):
         # gee = ex_template[i]
-        gii = parameters["gii"]*inh_template[i]
-        gei = parameters["gei"]*np.sqrt(ex_template[i]*inh_template[i])
+        gii = parameters["gii"]*inh_template_scaled[i]
+        gei = parameters["gei"]*np.sqrt(ex_template_scaled[i]*inh_template_scaled[i])
         tau_e = parameters["tau_e"]*mica_micro_intensity[i]
         tau_i = parameters["tau_i"]*mica_micro_intensity[i]
 

@@ -13,10 +13,29 @@ def local_stability(parameters,mica_micro_intensity,ex_template,inh_template):
     gee = 1
     st = 0
     
+    a = 0.9 
+    b = 1.1
+    
+    mine = np.amin(ex_template)
+    maxe = np.amax(ex_template);
+    
+    ex_template_scaled = np.zeros(ex_template.shape)
+
+    for i in range(len(ex_template)):
+        ex_template_scaled[i] = (b-a)*(ex_template[i]-mine)/(maxe-mine) + a
+    
+    mine = np.amin(inh_template)
+    maxe = np.amax(inh_template);
+    
+    inh_template_scaled = np.zeros(inh_template.shape)
+
+    for i in range(len(inh_template)):
+        inh_template_scaled[i] = (b-a)*(inh_template[i]-mine)/(maxe-mine) + a    
+    
     for i in range(68):
         # gee = ex_template[i]
-        gii = parameters["gii"]*inh_template[i]
-        gei = parameters["gei"]*np.sqrt(ex_template[i]*inh_template[i])
+        gii = parameters["gii"]*inh_template_scaled[i]
+        gei = parameters["gei"]*np.sqrt(ex_template_scaled[i]*inh_template_scaled[i])
         tau_e = parameters["tau_e"]*mica_micro_intensity[i]/1000
         tau_i = parameters["tau_i"]*mica_micro_intensity[i]/1000
 
@@ -43,8 +62,8 @@ def local_stability(parameters,mica_micro_intensity,ex_template,inh_template):
     
     for i in range(14):
         # gee = ex_template[68+i]
-        gii = parameters["gii"]*inh_template[68+i]
-        gei = parameters["gei"]*np.sqrt(ex_template[68+i]*inh_template[68+i])
+        gii = parameters["gii"]*inh_template_scaled[68+i]
+        gei = parameters["gei"]*np.sqrt(ex_template_scaled[68+i]*inh_template_scaled[68+i])
         tau_e = parameters["tau_e"]/1000
         tau_i = parameters["tau_i"]/1000
 
