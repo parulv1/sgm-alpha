@@ -79,12 +79,12 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     eigenvalues = np.transpose(eig_val)
     eigenvectors = eig_vec[:, 0:K]
     
-    mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
     # Load excitatory profile
-    ex_template_xr = xr.open_dataarray('/protected/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
+    ex_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/ex_template.nc')
     ex_template = ex_template_xr.values
     # Load inhibtory profile
-    inh_template_xr = xr.open_dataarray('/protected/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
+    inh_template_xr = xr.open_dataarray('/data/rajlab1/shared_data/datasets/neurotransmitters/inh_template.nc')
     inh_template = inh_template_xr.values
     
     a = 0.9 
@@ -108,17 +108,17 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
 #     Lobes
 
-#     lobes = pd.read_excel("/data/rajlab1/shared_data/datasets/RSN/DK_lobes.xlsx",header=None)
+    lobes = pd.read_excel("/data/rajlab1/shared_data/datasets/RSN/DK_lobes.xlsx",header=None)
     
-#     inh_template_lobe = np.zeros((len(inh_template),1))
+    inh_template_lobe = np.zeros((len(inh_template),1)) + np.amax(inh_template_scaled)
     
-#     for i in range(len(inh_template)):
-#         if lobes[1][i] == "Frontal" or lobes[1][i] == "Temporal":
-#             inh_template_lobe[i] = np.amax(inh_template)
-#         else:
-#             inh_template_lobe[i] = inh_template[i]
+    for i in range(len(inh_template)):
+        if lobes[1][i] == "Frontal" or lobes[1][i] == "Temporal":
+            inh_template_lobe[i] = np.amax(inh_template_scaled)
+        else:
+            inh_template_lobe[i] = inh_template_scaled[i]
                 
-#     inh_template = inh_template_lobe
+    inh_template_scaled = inh_template_lobe
 
     
 #     # Cortical model
