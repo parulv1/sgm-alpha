@@ -39,12 +39,13 @@ def build_fc_freq(brain, params, rois_with_MEG):
     # 3D, see earlier
     # mod_fq_resp, _, _, _ = runforward.run_local_coupling_forward( brain, params, freqs );
 
-    mean_freq = 10.5
+    mean_freq = 2 * np.pi * 10.5
     _, estFC, _, _, _ = nt.network_transfer_local_alpha( brain , params, mean_freq, np.array([]), 1, 0)
     
     
     # Absolute value of FC
-    absFC = np.abs( estFC[rois_with_MEG,rois_with_MEG] )
+    print(estFC.shape)
+    absFC = np.abs( estFC[0:len(rois_with_MEG),0:len(rois_with_MEG)] )
     diagFC = np.diag( absFC )
     diagFC = 1./np.sqrt( diagFC )
     D = np.diag( diagFC )
