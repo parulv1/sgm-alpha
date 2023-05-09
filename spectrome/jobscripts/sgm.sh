@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -cwd
 #### Specify job name
-#$ -N microint_receptors_gei_nogee_receptorscaled
+#$ -N microint_FC
 #### Output file
 #$ -o /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.out
 #### Error file
@@ -13,7 +13,7 @@
 #### memory per core
 #$ -l mem_free=2G
 #### Maximum run time 
-#$ -l h_rt=336:00:00
+#$ -l h_rt=50:00:00
 
 # export PATH="/home/pverma2/software/miniconda3/bin:$PATH"
 export PATH="/wynton/protected/home/rad-wynton-only/pverma2/software/miniconda3/bin:$PATH"
@@ -30,7 +30,7 @@ nproc --all
 
 which python 
 
-python -u ../scripts/SGM_fit_neurotransmitter.py
+python -u ../scripts/SGM_fit_org_FC.py
 
 # [[ -n "$JOB_ID" ]] && /netopt/sge_n1ge6/bin/lx24-amd64/qstat -j "$JOB_ID"
 [[ -n "$JOB_ID" ]] && qstat -j "$JOB_ID"

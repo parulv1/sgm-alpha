@@ -146,14 +146,14 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 #             p_means[visual_stimulus_roi[i],visual_stimulus_roi[i+1]] = Htotal_micro_vis[visual_stimulus_roi[i]]*np.conjugate(Htotal_micro_vis[visual_stimulus_roi[i+1]])
 #             p_means[visual_stimulus_roi[i+1],visual_stimulus_roi[i]] = Htotal_micro_vis[visual_stimulus_roi[i+1]]*np.conjugate(Htotal_micro_vis[visual_stimulus_roi[i]])
     
-    w0 = 2*np.pi*10
-    four_cos = w0/((1e-6+1j*w)**2 + w0**2)
+    # w0 = 2*np.pi*10
+    # four_cos = w0/((1e-6+1j*w)**2 + w0**2)
     
     p_means_vec = np.zeros((nroi,1),dtype="complex")
     
-    if np.any(stimulus_roi) == True:
-        for i in range(len(stimulus_roi)):
-            p_means_vec[stimulus_roi[i]] = Htotal_micro[stimulus_roi[i]]*four_cos
+    # if np.any(stimulus_roi) == True:
+    #     for i in range(len(stimulus_roi)):
+    #         p_means_vec[stimulus_roi[i]] = Htotal_micro[stimulus_roi[i]]*four_cos
         
     p_means = np.matmul(p_means_vec,np.matrix.getH(p_means_vec))
     
@@ -180,7 +180,7 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 #     model_out3 = np.abs(model_out2)
 #     model_out3 = model_out3.flatten()
 
-    model_out3 = np.abs(np.matmul(p_l_FC,Htotal_micro).flatten())
+    # model_out3 = np.abs(np.matmul(p_l_FC,Htotal_micro).flatten())
     
-    return model_out, model_out3, frequency_response2, eigenvalues, eigenvectors
+    return model_out, p_all_FC, frequency_response2, eigenvalues, eigenvectors
 
