@@ -37,6 +37,9 @@ def global_corr(x, brain, F_ind_db, meg_FC, rois_with_MEG, fvec):
 
     model_FC = est_FC.build_fc_freq(brain, brain.ntf_params, rois_with_MEG)
 
-    fc_corr = pearsonr(meg_FC.flatten(),model_FC.flatten())[0]
+    
+    fc_corr = [pearsonr(vec_meg,vec_model)[0] for vec_meg, vec_model in zip(functions.divideFc(meg_FC), functions.divideFc(model_FC))]
+    
+    # fc_corr = pearsonr(meg_FC.flatten(),model_FC.flatten())[0]
 
-    return ri_corr, fc_corr
+    return ri_corr, np.mean(fc_corr)

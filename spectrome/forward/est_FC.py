@@ -44,7 +44,7 @@ def build_fc_freq(brain, params, rois_with_MEG):
     
     
     # Absolute value of FC
-    print(estFC.shape)
+    
     absFC = np.abs( estFC[0:len(rois_with_MEG),0:len(rois_with_MEG)] )
     diagFC = np.diag( absFC )
     diagFC = 1./np.sqrt( diagFC )
