@@ -182,5 +182,6 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
     # model_out3 = np.abs(np.matmul(p_l_FC,Htotal_micro).flatten())
     
-    return model_out, p_all_FC, frequency_response2, eigenvalues, eigenvectors
+    # return model_out, p_all_FC, frequency_response2, eigenvalues, eigenvectors
+    return model_out, frequency_response2, eigenvalues, eigenvectors
 

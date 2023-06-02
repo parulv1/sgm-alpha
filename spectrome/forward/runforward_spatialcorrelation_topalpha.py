@@ -1,5 +1,5 @@
 """ Computing and sorting eigenmodes for alpha and beta band spatial correlations"""
-from ..forward import network_transfer_macrostable_microintensity_extrastimulus_neurotransmitter as nt
+from ..forward import network_transfer_macrostable_microintensity_extrastimulus as nt
 from ..utils import functions
 import numpy as np
 from scipy.stats import pearsonr
@@ -70,8 +70,8 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     L2 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + np.spacing(1))
     Cc = np.matmul(np.diag(L2), C)
     
-    # C2 = Cc + w_spat*np.eye(86)
-    C2 = Cc + w_spat*np.eye(82) #when including receptor density
+    C2 = Cc + w_spat*np.eye(86)
+    # C2 = Cc + w_spat*np.eye(82) #when including receptor density
     rowdegree = np.transpose(np.sum(C2, axis=1))
     coldegree = np.sum(C2, axis=0)
     qind = rowdegree + coldegree < 0.2 * np.mean(rowdegree + coldegree)
@@ -83,8 +83,12 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     
     func1 = np.matmul(Cc2[0:68,0:68], summed_PSD)
     
+    func2 = np.matmul(Cc2[0:68,0:68], eigvec_summed)
     
-    cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
+    cost_func = pearsonr(np.gradient(func1),np.gradient(func2))[0]
+    
+    
+    # cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
     
     
     return cost_func

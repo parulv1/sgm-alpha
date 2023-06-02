@@ -1,6 +1,6 @@
 #!/bin/bash
 #### Specify job name
-#SBATCH -J microint_FC_blocks
+#SBATCH -J microint_gradient
 #### Output file
 #SBATCH -o /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".out
 #### Error file
@@ -29,6 +29,6 @@ nproc --all
 
 which python
 
-python -u ../scripts/SGM_fit_org_FC.py
+python -u ../scripts/SGM_fit_org.py
 
 [[ -n "$SLURM_JOB_ID" ]] && sstat --format="JobID,AveCPU,MaxRSS,MaxPages,MaxDiskRead,MaxDiskWrite" -j "$SLURM_JOB_ID"
