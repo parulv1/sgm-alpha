@@ -83,12 +83,12 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     
     func1 = np.matmul(Cc2[0:68,0:68], summed_PSD)
     
-    func2 = np.matmul(Cc2[0:68,0:68], eigvec_summed)
+    # func2 = np.matmul(Cc2[0:68,0:68], eigvec_summed)
     
-    cost_func = pearsonr(np.gradient(func1),np.gradient(func2))[0]
+    # cost_func = pearsonr(np.gradient(func1),np.gradient(func2))[0]
     
     
-    # cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
+    cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
     
     
     return cost_func

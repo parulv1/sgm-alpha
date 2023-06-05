@@ -82,7 +82,8 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     eigenvalues = np.transpose(eig_val)
     eigenvectors = eig_vec[:, 0:K]
     
-    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/DK_MICA_qT1_mean_normalized.mat')['qT1_mean'])
 
 #     # Cortical model
     FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
@@ -98,10 +99,10 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
     Htotal = Hed + Hid
     
-    for i in range(18):
-        Htotal_micro[68+i] = Htotal
+    # for i in range(18):
+    #     Htotal_micro[68+i] = Htotal
 
-    for i in range(68):
+    for i in range(nroi):
         tau_e = parameters["tau_e"]*mica_micro_intensity[i]
         tau_i = parameters["tau_i"]*mica_micro_intensity[i]
 
