@@ -1,12 +1,12 @@
 #!/bin/bash
 #### Specify job name
-#SBATCH -J microint_qT1
+#SBATCH -J microint_wake
 #### Output file
 #SBATCH -o /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".out
 #### Error file
 #SBATCH -e /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".err
 #### number of cores 
-#SBATCH -n 36
+#SBATCH -n 14
 #### Specify queue
 #SBATCH --partition=long
 #### --nodelist=oakland,piedmont,novato,quartzhill
@@ -29,6 +29,6 @@ nproc --all
 
 which python
 
-python -u ../scripts/SGM_fit_org.py
+python -u ../scripts/SGM_fit_org_sleep.py
 
 [[ -n "$SLURM_JOB_ID" ]] && sstat --format="JobID,AveCPU,MaxRSS,MaxPages,MaxDiskRead,MaxDiskWrite" -j "$SLURM_JOB_ID"
