@@ -1,13 +1,13 @@
 #!/bin/bash
 #$ -cwd
 #### Specify job name
-#$ -N qT1_sleep_N2
+#$ -N qT1
 #### Output file
 #$ -o /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.out
 #### Error file
 #$ -e /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.err
 #### number of cores 
-#$ -pe smp 14
+#$ -pe smp 36
 #### Specify queue
 #$ -q long.q
 #### memory per core
@@ -30,7 +30,7 @@ nproc --all
 
 which python 
 
-python -u ../scripts/SGM_fit_org_sleep.py
+python -u ../scripts/SGM_fit_org.py
 
 # [[ -n "$JOB_ID" ]] && /netopt/sge_n1ge6/bin/lx24-amd64/qstat -j "$JOB_ID"
 [[ -n "$JOB_ID" ]] && qstat -j "$JOB_ID"
