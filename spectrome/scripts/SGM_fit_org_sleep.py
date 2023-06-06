@@ -21,7 +21,7 @@ from functools import partial
 start = time.time()
 
 
-sleep = loadmat('/data/bil-mb11/JolineSleep/forParul/PSD_pmtm_RP.mat')
+sleep = loadmat('/protected/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_RP.mat')
 print("Loaded sleep data", flush= True)
 
 Data = sleep['PSD']
@@ -66,7 +66,7 @@ rois_with_MEG = np.arange(0,nroi)
 
 paramlist = range(nsubs)
 
-sc_bn = loadmat("/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_template.mat")
+sc_bn = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_template.mat")
 
 conn = sc_bn['SC_template']
 dist = sc_bn['Dist_template']
@@ -76,7 +76,7 @@ brain = Brain.Brain()
 brain.reducedConnectome = conn
 brain.distance_matrix = dist
 
-mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean_BN_subcort.mat')['micro_intensity_mean_subcort'])
+mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean_BN_subcort.mat')['micro_intensity_mean_subcort'])
 
 # Parameter bounds for optimization
 # bnds = ((5.0,20.0), (5.0,20.0), (0.1,1.0), (5.0,20.0), (0.5,5.0), (0.5,5.0), (5.0,20.0))
@@ -267,7 +267,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_microint.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_microint.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 

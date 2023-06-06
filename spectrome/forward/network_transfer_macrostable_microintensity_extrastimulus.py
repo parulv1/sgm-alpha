@@ -84,7 +84,7 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     
     # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
     # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/DK_MICA_qT1_mean_normalized.mat')['qT1_mean'])
-    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean_BN_subcort.mat')['micro_intensity_mean_subcort'])
+    mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean_BN_subcort.mat')['micro_intensity_mean_subcort'])
 
 
 #     # Cortical model
