@@ -24,15 +24,14 @@ start = time.time()
 sleep = loadmat('/data/bil-mb11/JolineSleep/forParul/PSD_pmtm_RP.mat')
 print("Loaded sleep data", flush= True)
 
-# Data = sleep['PSD']
-Data = sleep['REL_psdx']
+Data = sleep['PSD']
 
 N1 = Data[:,0]
 N2 = Data[:,1]
 wake = Data[:,3]
 
 temp = np.squeeze(N1[0][1])
-psd_N1 = temp['psdx']
+psd_N1 = temp['REL_psdx']
 
 fvec = temp['freqs'][0][:,0]
 
@@ -51,12 +50,12 @@ print("nsubs len:", nsubs)
 print("nroi len:", nroi)
 
 temp = np.squeeze(N2[0][1])
-psd_N2 = temp['psdx']
+psd_N2 = temp['REL_psdx']
 
 print("shape of N2:", psd_N2.shape)
 
 temp = np.squeeze(wake[0][1])
-psd_wake = temp['psdx']
+psd_wake = temp['REL_psdx']
 
 print("shape of wake:", psd_wake.shape)
 

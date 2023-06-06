@@ -90,7 +90,7 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 #     # Cortical model
     FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
     
-    Htotal_micro = np.zeros((86,1),dtype="complex")
+    Htotal_micro = np.zeros((nroi,1),dtype="complex")
 
     Fe = np.divide(1 / tau_e ** 2, (1j * w + 1 / tau_e) ** 2)
     Fi = np.divide(1 / tau_i ** 2, (1j * w + 1 / tau_i) ** 2)
