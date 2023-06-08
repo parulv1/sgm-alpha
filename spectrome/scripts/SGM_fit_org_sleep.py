@@ -9,8 +9,8 @@ from scipy.io import loadmat
 from spectrome.optim import sgmglobaloptim, sgmglobaloptim_pearson
 from scipy.optimize import dual_annealing
 from spectrome.brain import Brain
-from spectrome.stability import localstability_microintensity_allrois
-# from spectrome.stability import localstability
+# from spectrome.stability import localstability_microintensity_allrois
+from spectrome.stability import localstability
 
 import time
 
@@ -221,7 +221,7 @@ def optsgm_st(brain,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
     
-    st = localstability_microintensity_allrois.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
     
     if st>0:
         res = optsgm(brain,psd,rois_with_MEG,fvec,s,bnds2)
@@ -231,7 +231,7 @@ def optsgm_st(brain,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
 
-    st = localstability_microintensity_allrois.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
 
     if st>0:
         res = optsgm(brain,psd,rois_with_MEG,fvec,s,bnds3)
@@ -241,7 +241,7 @@ def optsgm_st(brain,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
 
-    st = localstability_microintensity_allrois.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
 
     if st>0:
         res = optsgm(brain,psd,rois_with_MEG,fvec,s,bnds4)
@@ -267,7 +267,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_qT1.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_orgSGM_relspec.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   

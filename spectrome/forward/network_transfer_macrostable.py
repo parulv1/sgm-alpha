@@ -4,7 +4,7 @@ Makes the calculation for a single frequency only. """
 import numpy as np
 from scipy.io import loadmat
 
-def network_transfer_local_alpha(brain, parameters, w):
+def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_means):
     """Network Transfer Function for spectral graph model.
 
     Args:

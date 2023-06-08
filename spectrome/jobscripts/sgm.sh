@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -cwd
 #### Specify job name
-#$ -N qT1
+#$ -N wake_orgSGM
 #### Output file
 #$ -o /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.out
 #### Error file
