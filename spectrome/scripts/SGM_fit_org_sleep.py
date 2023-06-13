@@ -66,9 +66,13 @@ rois_with_MEG = np.arange(0,nroi)
 
 paramlist = range(nsubs)
 
-sc_bn = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_template.mat")
+# sc_bn = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_template.mat")
+sc_bn = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_roivolnorm_template.mat")
 
-conn = sc_bn['SC_template']
+# conn = sc_bn['SC_template']
+# dist = sc_bn['Dist_template']
+
+conn = sc_bn['SC_template_volnorm']
 dist = sc_bn['Dist_template']
 
 # create spectrome brain:
@@ -273,7 +277,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_orgSGM_relspec_reducedconnectome.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_orgSGM_relspec_roivolnorm_reducedconnectome.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   
