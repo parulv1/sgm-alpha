@@ -1,5 +1,5 @@
 """ Computing and sorting eigenmodes for alpha and beta band spatial correlations"""
-from ..forward import network_transfer_macrostable_microintensity_extrastimulus as nt
+from ..forward import network_transfer_macrostable as nt
 from ..utils import functions
 import numpy as np
 from scipy.stats import pearsonr
@@ -72,8 +72,8 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     
     nroi = len(rois_with_MEG)
     
-    C2 = Cc + w_spat*np.eye(86)
-    # C2 = Cc + w_spat*np.eye(nroi)
+    # C2 = Cc + w_spat*np.eye(86)
+    C2 = Cc + w_spat*np.eye(nroi)
     # C2 = Cc + w_spat*np.eye(82) #when including receptor density
     rowdegree = np.transpose(np.sum(C2, axis=1))
     coldegree = np.sum(C2, axis=0)
@@ -84,8 +84,8 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     Cc2 = np.matmul(np.diag(L22), C2)    
     
     
-    func1 = np.matmul(Cc2[0:68,0:68], summed_PSD)
-    # func1 = np.matmul(Cc2, summed_PSD)
+    # func1 = np.matmul(Cc2[0:68,0:68], summed_PSD)
+    func1 = np.matmul(Cc2, summed_PSD)
     
     # func2 = np.matmul(Cc2[0:68,0:68], eigvec_summed)
     

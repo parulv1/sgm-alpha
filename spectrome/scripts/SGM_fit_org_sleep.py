@@ -73,10 +73,14 @@ dist = sc_bn['Dist_template']
 
 # create spectrome brain:
 brain = Brain.Brain()
-brain.reducedConnectome = conn
+# brain.reducedConnectome = conn
+brain.connectome = conn
 brain.distance_matrix = dist
+brain.bi_symmetric_c_BN()
+brain.reduce_extreme_dir()
 
-mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/BN_MICA_qT1_mean_normalized.mat')['qT1_mean'])
+
+mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean_BN_subcort.mat')['micro_intensity_mean_subcort'])
 
 # Parameter bounds for optimization
 # bnds = ((5.0,20.0), (5.0,20.0), (0.1,1.0), (5.0,20.0), (0.5,5.0), (0.5,5.0), (5.0,20.0))
@@ -267,7 +271,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_N2_orgSGM_relspec.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_N2_orgSGM_relspec_reducedconnectome.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   
