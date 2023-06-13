@@ -79,6 +79,8 @@ brain.distance_matrix = dist
 brain.bi_symmetric_c_BN()
 brain.reduce_extreme_dir()
 
+print(brain.reducedConnectome.shape)
+print(brain.distance_matrix.shape)
 
 mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean_BN_subcort.mat')['micro_intensity_mean_subcort'])
 
