@@ -61,17 +61,38 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
 #     spcorr = pearsonr(summed_PSD, eigvec_summed)[0]
 #     w_spat = 10.0
 
+    C = brain.reducedConnectome
+    
+    rowdegree = np.transpose(np.sum(C, axis=1))
+    coldegree = np.sum(C, axis=0)
+    
+    degree = rowdegree + coldegree
+    
+    eps = min([i for i in degree if i > 0])
+
+    L22 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
+    Cc2 = np.matmul(np.diag(L22), C)
+
+    cost_func = pearsonr(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))[0]
+    
+    return cost_func
+
+
+
 #     C = brain.reducedConnectome
 #     rowdegree = np.transpose(np.sum(C, axis=1))
 #     coldegree = np.sum(C, axis=0)
+# #     remove np.inf computations from everywhere.
 #     qind = rowdegree + coldegree < 0.2 * np.mean(rowdegree + coldegree)
 #     rowdegree[qind] = np.inf
 #     coldegree[qind] = np.inf
+# #     replace np.spacing with smallest non-zero degree.
 #     L2 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + np.spacing(1))
 #     Cc = np.matmul(np.diag(L2), C)
     
 #     nroi = len(rois_with_MEG)
     
+# #     C2 = 0.05*Cc + 0.95*I
 #     # C2 = Cc + w_spat*np.eye(86)
 #     C2 = Cc + w_spat*np.eye(nroi)
 #     # C2 = Cc + w_spat*np.eye(82) #when including receptor density
@@ -84,18 +105,21 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
 #     Cc2 = np.matmul(np.diag(L22), C2)    
     
     
-#     # func1 = np.matmul(Cc2[0:68,0:68], summed_PSD)
-#     func1 = np.matmul(Cc2, summed_PSD)
     
-    # func2 = np.matmul(Cc2[0:68,0:68], eigvec_summed)
+# #     # func1 = np.matmul(Cc2[0:68,0:68], summed_PSD)
+#     func1 = np.matmul(Cc2, summed_PSD) # Cc2*MEG
     
-    # cost_func = pearsonr(np.gradient(func1),np.gradient(func2))[0]
+#     # func2 = np.matmul(Cc2[0:68,0:68], eigvec_summed)
     
-    
-    # cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
-    
-    cost_func = pearsonr(np.matmul(brain.distance_matrix,eigvec_summed),np.matmul(brain.distance_matrix,summed_PSD))[0]
+#     # cost_func = pearsonr(np.gradient(func1),np.gradient(func2))[0]
     
     
-    return cost_func
-    # return summed_PSD, eigvec_summed
+#     cost_func =  np.matmul(np.transpose(eigvec_summed),func1) # SGM*func1
+#     # cost_func = SGM*Cc2*MEG
+# #     Try pearsons's between CC2*SGM and CC2*MEG
+    
+#     # cost_func = pearsonr(np.matmul(brain.distance_matrix,eigvec_summed),np.matmul(brain.distance_matrix,summed_PSD))[0]
+    
+    
+#     return cost_func
+#     # return summed_PSD, eigvec_summed
