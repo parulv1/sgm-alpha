@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -cwd
 #### Specify job name
-#$ -N N2_orgSGM_volnorm_Ccost
+#$ -N N2_orgSGM_volnorm_distcost
 #### Output file
 #$ -o /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.out
 #### Error file
