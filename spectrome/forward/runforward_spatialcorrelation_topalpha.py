@@ -76,7 +76,8 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     # cost_func = pearsonr(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))[0]
     # cost_func = pearsonr(np.matmul(brain.distance_matrix,eigvec_summed),np.matmul(brain.distance_matrix,summed_PSD))[0]
     
-    cost_func = functions.ccc(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))
+    # cost_func = functions.ccc(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))
+    cost_func = functions.ccc(np.matmul(brain.distance_matrix,eigvec_summed),np.matmul(brain.distance_matrix,summed_PSD))
 
     return cost_func
 
