@@ -21,9 +21,16 @@ def divideFc(fc):
     size_fc = len(fc)
     hs_fc = int(size_fc/2)
     fc_block1 = fc[:hs_fc, :hs_fc]
-    fc_block2 = fc[hs_fc:, hs_fc:];
-    fc_block3 = fc[:hs_fc, hs_fc:];
+    fc_block2 = fc[hs_fc:, hs_fc:]
+    fc_block3 = fc[:hs_fc, hs_fc:]
     vec1 = fc_block1[np.triu_indices(hs_fc, k = 1)].flatten()
     vec2 = fc_block2[np.triu_indices(hs_fc, k = 1)].flatten()
     vec3 = fc_block3.flatten()
     return vec1, vec2, vec3
+
+def ccc(x,y):
+    """ Concordance Correlation Coefficient """
+
+    sxy = np.sum((x - np.mean(x))*(y - np.mean(y)))/x.shape[0]
+
+    return 2*sxy / (np.var(x) + np.var(y) + (np.mean(x) - np.mean(y))**2)

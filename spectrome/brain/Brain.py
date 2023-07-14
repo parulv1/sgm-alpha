@@ -152,3 +152,4 @@ class Brain:
         self.connectome[np.ix_(rinds, rinds)] = q
         self.connectome[np.ix_(linds, rinds)] = q1
         self.connectome[np.ix_(rinds, linds)] = q1
+        
