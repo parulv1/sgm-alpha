@@ -85,12 +85,13 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
     # eigenvectors_inv = np.linalg.inv(eigenvectors)
     
-    mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+    mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 
 #     # Cortical model
     FG = np.divide(1 / tauC ** 2, (1j * w + 1 / tauC) ** 2)
     
-    Htotal_micro = np.zeros((86,1),dtype="complex")
+    # Htotal_micro = np.zeros((86,1),dtype="complex")
+    Htotal_micro = np.zeros((84,1),dtype="complex")
 
     Fe = np.divide(1 / tau_e ** 2, (1j * w + 1 / tau_e) ** 2)
     Fi = np.divide(1 / tau_i ** 2, (1j * w + 1 / tau_i) ** 2)
@@ -101,7 +102,8 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
     Htotal = Hed + Hid
     
-    for i in range(18):
+    # for i in range(18):
+    for i in range(16):
         Htotal_micro[68+i] = Htotal
 
     for i in range(68):
