@@ -153,3 +153,28 @@ class Brain:
         self.connectome[np.ix_(linds, rinds)] = q1
         self.connectome[np.ix_(rinds, linds)] = q1
         
+    def bi_symmetric_c_mica(self):
+        """Short summary.
+
+        Args:
+            linds (type): Description of parameter `linds`.
+            rinds (type): Description of parameter `rinds`.
+
+        Returns:
+            type: Description of returned object.
+
+        """
+        # Some other ordering that was in the original code:
+        linds = np.concatenate([np.arange(0, 34), np.arange(68, 76)])
+        rinds = np.concatenate([np.arange(34, 68), np.arange(76, 84)])
+
+        q = np.maximum(
+            self.connectome[linds, :][:, linds], self.connectome[rinds, :][:, rinds]
+        )
+        q1 = np.maximum(
+            self.connectome[linds, :][:, rinds], self.connectome[rinds, :][:, linds]
+        )
+        self.connectome[np.ix_(linds, linds)] = q
+        self.connectome[np.ix_(rinds, rinds)] = q
+        self.connectome[np.ix_(linds, rinds)] = q1
+        self.connectome[np.ix_(rinds, linds)] = q1
