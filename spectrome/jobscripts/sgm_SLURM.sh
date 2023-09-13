@@ -1,6 +1,6 @@
 #!/bin/bash
 #### Specify job name
-#SBATCH -J chang_mica_reducedC_Ccost_10I
+#SBATCH -J chang_microint_mica_reducedC_Ccost_10I
 #### Output file
 #SBATCH -o /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".out
 #### Error file
