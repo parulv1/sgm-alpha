@@ -1,5 +1,5 @@
 """ Computing and sorting eigenmodes for alpha and beta band spatial correlations"""
-from ..forward import network_transfer_macrostable_microintensity as nt
+from ..forward import network_transfer_macrostable as nt
 from ..utils import functions
 import numpy as np
 from scipy.stats import pearsonr
@@ -73,8 +73,21 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     nroi = len(rois_with_MEG)
     L22 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
     Cc2 = np.matmul(np.diag(L22), C)[0:68,0:68] + w_spat*np.eye(nroi)
+    
+#     Extra lines to match previous spatial R
+    rowdegree = np.transpose(np.sum(Cc2, axis=1))
+    coldegree = np.sum(Cc2, axis=0)
+    
+    degree = rowdegree + coldegree
+    
+    eps = min([i for i in degree if i > 0])
+    L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
+    Cc3 = np.matmul(np.diag(L23), Cc2)
+    
+    func1 = np.matmul(Cc3, summed_PSD)
+    cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
 
-    cost_func = pearsonr(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))[0]
+    # cost_func = pearsonr(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))[0]
     # cost_func = pearsonr(np.matmul(brain.distance_matrix,eigvec_summed),np.matmul(brain.distance_matrix,summed_PSD))[0]
     
     # cost_func = functions.ccc(np.matmul(Cc2,eigvec_summed),np.matmul(Cc2,summed_PSD))

@@ -1,5 +1,5 @@
 """ running the ntf over a range of frequencies."""
-from ..forward import network_transfer_macrostable_microintensity as nt
+from ..forward import network_transfer_macrostable as nt
 import numpy as np
 
 def run_local_coupling_forward(brain, params, freqs):
