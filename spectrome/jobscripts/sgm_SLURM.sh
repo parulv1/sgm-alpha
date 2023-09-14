@@ -1,6 +1,6 @@
 #!/bin/bash
 #### Specify job name
-#SBATCH -J wake_noreducedC_oldcost
+#SBATCH -J N2_noreducedC_oldcost
 #### Output file
 #SBATCH -o /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".out
 #### Error file
