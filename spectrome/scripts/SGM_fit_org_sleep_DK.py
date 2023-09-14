@@ -21,7 +21,7 @@ from functools import partial
 start = time.time()
 
 
-sleep = loadmat('/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_50Hz_DK_reordered.mat')
+sleep = loadmat('/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_50Hz_DK_relative_reordered.mat')
 print("Loaded sleep data", flush= True)
 
 Data = sleep['PSD_reordered']
@@ -67,19 +67,6 @@ rois_with_MEG = np.arange(0,nroi)
 
 paramlist = range(nsubs)
 
-# sc_bn = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_template.mat")
-# sc_bn = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/SC_HC_BN_roivolnorm_template.mat")
-# sc_bn_mathalon = loadmat("/protected/data/rajlab1/shared_data/datasets/brainnetome_template/Mathalon/sc_dt_Mathalon_BN_llrr.mat")
-
-# conn = sc_bn['SC_template']
-# dist = sc_bn['Dist_template']
-
-# conn = sc_bn['SC_template_volnorm']
-# dist = sc_bn['Dist_template']
-
-# conn = sc_bn_mathalon['sc_Mathalon_BN_llrr']
-# dist = sc_bn_mathalon['dt_Mathalon_BN_llrr']
-
 
 # define data directory
 data_dir = path.get_data_path()
@@ -88,15 +75,10 @@ brain = Brain.Brain()
 brain.add_connectome(data_dir) # grabs distance matrix
 # # re-ordering for DK atlas and normalizing the connectomes:
 brain.reorder_connectome(brain.connectome, brain.distance_matrix)
-brain.bi_symmetric_c()
-brain.reduce_extreme_dir()
-
-# brain.reducedConnectome = conn
-# brain.connectome = conn
-# brain.distance_matrix = dist
-# brain.reducedConnectome = conn
-# brain.bi_symmetric_c_BN()
+brain.reducedConnectome = brain.connectome
+# brain.bi_symmetric_c()
 # brain.reduce_extreme_dir()
+
 
 print(brain.reducedConnectome.shape)
 print(brain.distance_matrix.shape)
@@ -292,7 +274,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_orgSGM_DK_Ccost_10I.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/sleep_wake_orgSGM_DK_oldcost.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   
