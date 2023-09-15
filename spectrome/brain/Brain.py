@@ -127,6 +127,18 @@ class Brain:
         C = max_dir * C + (1 - max_dir) * C
         self.reducedConnectome = C
 
+    def reorder_connectome_mica(self, connectome, distancematrix):
+        """re-order the present connectome and distance matrix -- note that this is
+        a first iteration and some work needs to be done to make it flexible with regards
+        the specific ordering."""
+        con, dist, permutation = perm.reorder_connectome_mica(
+            conmat=connectome, distmat=distancematrix
+        )
+        self.connectome = con
+        self.distance_matrix = dist
+        self.permutation = permutation
+        
+        
     def bi_symmetric_c_BN(self):
         """Short summary.
 
@@ -165,8 +177,8 @@ class Brain:
 
         """
         # Some other ordering that was in the original code:
-        linds = np.concatenate([np.arange(0, 34), np.arange(68, 76)])
-        rinds = np.concatenate([np.arange(34, 68), np.arange(76, 84)])
+        linds = np.concatenate([np.arange(0, 34), np.arange(68, 75)])
+        rinds = np.concatenate([np.arange(34, 68), np.arange(75, 82)])
 
         q = np.maximum(
             self.connectome[linds, :][:, linds], self.connectome[rinds, :][:, rinds]

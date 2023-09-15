@@ -107,3 +107,31 @@ def reorder_connectome(conmat, distmat, save=False, cortexstart=18):
     Distance_matrix = Distance_matrix[permutation,][:, permutation]
 
     return Connectome, Distance_matrix, permutation
+
+def reorder_connectome_mica(conmat, distmat, save=False, cortexstart=14):
+    """A function to rearrange matrices by a cyclical permutation (no rearranging of order).
+    This is the equivalent of perm_HCP in the first code version:
+    np.concatenate([np.arange(18, 52),
+                              np.arange(52, 86),
+                              np.arange(0, 9),
+                              np.arange(9, 18)])
+
+    Args:
+        conmat (numpy array): Direct input connectome
+        distmat (numpy array): Direct input distance matrix
+        save (bool): Whether to save out to files.
+        cortexstart (int): Index of the first point in the cortex, eg. LHbankssts.
+
+    Returns:
+        numpy arrays: Connectome, distance matrix, and the permutation used on them.
+
+    """
+    Connectome = conmat
+    Distance_matrix = distmat
+    permutation = np.concatenate(
+        [np.arange(cortexstart, 82), np.arange(0, cortexstart)]
+    )
+    Connectome = Connectome[permutation,][:, permutation]
+    Distance_matrix = Distance_matrix[permutation,][:, permutation]
+
+    return Connectome, Distance_matrix, permutation
