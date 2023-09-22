@@ -44,6 +44,7 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
 #     Add a sumsum before doing all of this
 #     C = C/C.sum()
+    C = C/np.linalg.norm(C)
     # define sum of degrees for rows and columns for laplacian normalization
     rowdegree = np.transpose(np.sum(C, axis=1))
     coldegree = np.sum(C, axis=0)

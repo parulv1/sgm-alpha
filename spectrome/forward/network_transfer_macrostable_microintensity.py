@@ -44,13 +44,19 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
 
 #     Add a sumsum before doing all of this
 #     C = C/C.sum()
+    C = C/np.linalg.norm(C)
     # define sum of degrees for rows and columns for laplacian normalization
     rowdegree = np.transpose(np.sum(C, axis=1))
     coldegree = np.sum(C, axis=0)
+    
+    degree = rowdegree + coldegree
+    eps = min([i for i in degree if i > 0])
+    
+    
 #     Ashish suggests removing all of these
-    qind = rowdegree + coldegree < 0.2 * np.mean(rowdegree + coldegree)
-    rowdegree[qind] = np.inf
-    coldegree[qind] = np.inf
+    # qind = rowdegree + coldegree < 0.2 * np.mean(rowdegree + coldegree)
+    # rowdegree[qind] = np.inf
+    # coldegree[qind] = np.inf
 
     nroi = C.shape[0]
 
@@ -72,7 +78,7 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     # Lc = np.divide(1, np.sqrt(coldegree) + np.spacing(1))
     # L = L1 - alpha * np.matmul(np.diag(Lr), np.matmul(Cc, np.diag(Lc)))
     
-    L2 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + np.spacing(1))
+    L2 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
     L = L1 - alpha * np.matmul(np.diag(L2), Cc)
 
     d, v = np.linalg.eig(L)  
