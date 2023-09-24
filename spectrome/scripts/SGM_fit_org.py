@@ -9,8 +9,8 @@ from scipy.io import loadmat
 from spectrome.optim import sgmglobaloptim, sgmglobaloptim_pearson
 from scipy.optimize import dual_annealing
 from spectrome.brain import Brain
-# from spectrome.stability import localstability_microintensity_allrois
-from spectrome.stability import localstability
+from spectrome.stability import localstability_microintensity_allrois
+# from spectrome.stability import localstability
 
 import time
 
@@ -55,7 +55,7 @@ ind_psd = ind_psd_xr.values
 # SC_volnorm_template = sc_fa_tinnitus["sc_tinnitus"][0][0][4]
 
 
-sc_dk_mica = loadmat("/protected/data/rajlab1/shared_data/datasets/MICA/mica_sc_dt_aparc_nocorpuscollusum.mat")
+sc_dk_mica = loadmat("/data/rajlab1/shared_data/datasets/MICA/mica_sc_dt_aparc_nocorpuscollusum.mat")
 
 conn = sc_dk_mica['SC_mean']
 dist = sc_dk_mica['DT_mean']
@@ -66,6 +66,7 @@ brain = Brain.Brain()
 brain.connectome = conn
 brain.distance_matrix = dist
 # brain.add_connectome(data_dir)
+# brain.reorder_connectome(brain.connectome, brain.distance_matrix)
 brain.reorder_connectome_mica(brain.connectome, brain.distance_matrix)
 brain.reducedConnectome = brain.connectome
 # brain.reducedConnectome = conn
@@ -75,7 +76,7 @@ brain.reducedConnectome = brain.connectome
 # brain.bi_symmetric_c_mica()
 # brain.reduce_extreme_dir()
 
-mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/DK_MICA_qT1_mean_normalized.mat')['qT1_mean'])
 
 fvec = ind_psd_xr["frequencies"].values
@@ -286,7 +287,7 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
     
-    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability_microintensity_allrois.local_stability(brain.ntf_params,mica_micro_intensity)
     
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds2)
@@ -296,7 +297,7 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
 
-    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability_microintensity_allrois.local_stability(brain.ntf_params,mica_micro_intensity)
 
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds3)
@@ -306,7 +307,7 @@ def optsgm_st(cdk,psd,rois_with_MEG,fvec,mica_micro_intensity,s):
     brain.ntf_params["gei"] = res[4]
     brain.ntf_params["gii"] = res[5]
 
-    st = localstability.local_stability(brain.ntf_params,mica_micro_intensity)
+    st = localstability_microintensity_allrois.local_stability(brain.ntf_params,mica_micro_intensity)
 
     if st>0:
         res = optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds4)
@@ -332,7 +333,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized/orgSGM_chang_micatemplate_noreducedC_oldCcost.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized/microint_chang_micatemplate_noreducedC_oldCcost.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 

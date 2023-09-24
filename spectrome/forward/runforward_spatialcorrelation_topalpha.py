@@ -1,5 +1,5 @@
 """ Computing and sorting eigenmodes for alpha and beta band spatial correlations"""
-from ..forward import network_transfer_macrostable as nt
+from ..forward import network_transfer_macrostable_microintensity as nt
 from ..utils import functions
 import numpy as np
 from scipy.stats import pearsonr
