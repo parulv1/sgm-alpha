@@ -1,0 +1,36 @@
+64
+/wynton/protected/home/rad-wynton-only/pverma2/software/miniconda3/envs/spectrome/bin/python
+test 2 wynton
+==============================================================
+job_number:                 632852
+exec_file:                  job_scripts/632852
+submission_time:            Sun Sep 24 19:12:55 2023
+owner:                      pverma2
+uid:                        1317
+group:                      rad-wynton-only
+gid:                        1076
+sge_o_home:                 /wynton/protected/home/rad-wynton-only/pverma2
+sge_o_log_name:             pverma2
+sge_o_path:                 /opt/sge/bin:/opt/sge/bin/lx-amd64:/wynton/protected/home/rad-wynton-only/pverma2/.vscode-server/bin/6c3e3dba23e8fadc360aed75ce363ba185c49794/bin/remote-cli:/opt/sge/bin:/opt/sge/bin/lx-amd64:/wynton/protected/home/rad-wynton-only/pverma2/software/miniconda3/bin:/wynton/protected/home/rad-wynton-only/pverma2/software/miniconda3/condabin:/opt/sge/bin:/opt/sge/bin/lx-amd64:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/wynton/protected/home/rad-wynton-only/pverma2/.local/bin:/wynton/protected/home/rad-wynton-only/pverma2/bin:/wynton/protected/home/rad-wynton-only/pverma2/.local/bin:/wynton/protected/home/rad-wynton-only/pverma2/bin
+sge_o_shell:                /bin/bash
+sge_o_workdir:              /wynton/protected/home/rad-wynton-only/pverma2/research/sgm-alpha/spectrome/jobscripts
+sge_o_host:                 pdev1
+account:                    sge
+cwd:                        /wynton/protected/home/rad-wynton-only/pverma2/research/sgm-alpha/spectrome/jobscripts
+stderr_path_list:           NONE:NONE:$JOB_NAME_$JOB_ID.err
+hard resource_list:         rocky8=false,mem_free=2G,h_rt=1209600
+mail_list:                  pverma2@pdev1.wynton.ucsf.edu
+notify:                     FALSE
+job_name:                   test2_wynton
+stdout_path_list:           NONE:NONE:$JOB_NAME_$JOB_ID.out
+jobshare:                   0
+hard_queue_list:            long.q
+env_list:                   TERM=NONE
+script_file:                test_wynton.sh
+parallel environment:  smp range: 1
+project:                    surbecklab
+binding:                    NONE
+job_type:                   NONE
+usage         1:            cpu=00:00:01, mem=0.03710 GB s, io=0.02190 GB, vmem=63.348M, maxvmem=63.348M
+binding       1:            NONE
+scheduling info:            (Collecting of scheduler job information is turned off)
