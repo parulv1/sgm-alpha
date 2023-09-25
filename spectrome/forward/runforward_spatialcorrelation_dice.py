@@ -52,9 +52,9 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
 
     summed_PSD = summed_PSD/np.linalg.norm(summed_PSD)
 
-    summed_PSD_binarized = np.where(summed_PSD>np.mean(summed_PSD))
+    summed_PSD_binarized = np.where(summed_PSD>np.mean(summed_PSD), 1, 0)
 
-    eigvec_summed_binarized = np.where(eigvec_summed>np.mean(eigvec_summed))
+    eigvec_summed_binarized = np.where(eigvec_summed>np.mean(eigvec_summed), 1, 0)
 
     
     cost_func = distance.dice(summed_PSD_binarized, eigvec_summed_binarized)
