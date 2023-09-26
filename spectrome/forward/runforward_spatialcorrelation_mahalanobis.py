@@ -37,7 +37,7 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     for i in range(len(freqband)):
         w = 2 * np.pi * freqs[freqband[i]]
         eigenvectors_ns, _, _, _ = nt.network_transfer_local_alpha(
-            brain, params, w
+            brain, params, w, np.array([]), 1, 0
         )
 
         eigvec_ns[:,i] = eigenvectors_ns[rois_with_MEG]
