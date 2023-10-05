@@ -37,9 +37,9 @@ fvec = temp['freqs'][0][:,0]
 print("shape of fvec:", fvec.shape)
 
 # Take frequencies till 35 Hz
-fvec = fvec[0:30]
+fvec = fvec[0:45]
 
-print("after cutting off till 30 Hz fvec shape:", fvec.shape)
+print("after cutting off till 45 Hz fvec shape:", fvec.shape)
 print("Last frequency in fvec:", fvec[-1])
 
 
@@ -125,7 +125,7 @@ def flagout(optres,bnd):
 def optsgm(brain,psd,rois_with_MEG,fvec,s,bnds):
     print('optsgm', os.getpid(), s)
 
-    F_ind = psd[s][:,0:30] # grab current subject's MEG
+    F_ind = psd[s][:,0:45] # grab current subject's MEG
 
     F_ind_db = 10*np.log10(F_ind)
 
@@ -274,7 +274,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_mahalanobis/sleep_wake_DK_oldcost.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_mahalanobis2/sleep_wake_DK_oldcost_45Hz.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   

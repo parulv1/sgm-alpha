@@ -83,7 +83,7 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     
     Cc3 = Cc3[0:len(rois_with_MEG),0:len(rois_with_MEG)]
     
-    cost_func = -distance.mahalanobis(summed_PSD, eigvec_summed, Cc3)
+    cost_func = distance.mahalanobis(summed_PSD, eigvec_summed, Cc3)
     
     return cost_func
     # return summed_PSD, eigvec_summed
