@@ -21,7 +21,7 @@ from functools import partial
 start = time.time()
 
 
-sleep = loadmat('/protected/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_50Hz_DK_relative_moreDelta_reordered.mat')
+sleep = loadmat('/protected/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_50Hz_DK_relative_reordered.mat')
 print("Loaded sleep data", flush= True)
 
 Data = sleep['PSD_reordered']
@@ -274,7 +274,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_mahalanobis2/sleep_wake_DK_oldcost_moreDelta_45Hz.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_orgspatcost/sleep_wake_DK_oldcost_45Hz.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   

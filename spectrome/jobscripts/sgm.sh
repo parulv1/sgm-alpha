@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -cwd
 #### Specify job name
-#$ -N orgSGM_sleep_N2_mahalanobis2_moredelta
+#$ -N orgSGM_sleep_N2_oldcost_45Hz
 #### Output file
 #$ -o /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.out
 #### Error file
@@ -13,7 +13,8 @@
 #### memory per core
 #$ -l mem_free=2G
 #### Maximum run time 
-#$ -l h_rt=336:00:00
+#### -l h_rt=336:00:00
+#$ -l h_rt=100:00:00
 
 # export PATH="/home/pverma2/software/miniconda3/bin:$PATH"
 export PATH="/wynton/protected/home/rad-wynton-only/pverma2/software/miniconda3/bin:$PATH"
