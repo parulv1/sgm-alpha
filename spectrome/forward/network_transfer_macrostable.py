@@ -49,9 +49,11 @@ def network_transfer_local_alpha(brain, parameters, w, stimulus_roi, w_var, w_me
     rowdegree = np.transpose(np.sum(C, axis=1))
     coldegree = np.sum(C, axis=0)
 
-    degree = rowdegree + coldegree
+    # degree = rowdegree + coldegree
     
-    eps = min([i for i in degree if i > 0])
+    # eps = min([i for i in degree if i > 0])
+    degree = (rowdegree + coldegree)/2
+    eps = np.percentile(degree,5)
     
 #     Ashish suggests removing all of these
     # qind = rowdegree + coldegree < 0.2 * np.mean(rowdegree + coldegree)
