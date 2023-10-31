@@ -76,7 +76,7 @@ brain.reducedConnectome = brain.connectome
 # brain.bi_symmetric_c_mica()
 # brain.reduce_extreme_dir()
 
-mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/DK_MICA_qT1_mean_normalized.mat')['qT1_mean'])
 
 fvec = ind_psd_xr["frequencies"].values
@@ -333,7 +333,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_spatcost_5percentile_db/orgSGM_chang_hcptemplate.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_newspatcost_5percentile/orgSGM_chang_hcptemplate.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 

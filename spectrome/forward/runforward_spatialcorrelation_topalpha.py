@@ -66,16 +66,16 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     # eps = min([i for i in degree if i > 0])
     degree = (rowdegree + coldegree)/2
     eps = np.percentile(degree,5)
-    w_spat = 10
+    w_spat = 1
     nroi = len(rois_with_MEG)
     L22 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
     Cc2 = np.matmul(np.diag(L22), C)[0:68,0:68] + w_spat*np.eye(nroi)
     
-    Cc2 = Cc2/np.linalg.norm(Cc2)
+    # Cc2 = Cc2/np.linalg.norm(Cc2)
     
 #     Extra lines to match previous spatial R
-    rowdegree = np.transpose(np.sum(Cc2, axis=1))
-    coldegree = np.sum(Cc2, axis=0)
+    # rowdegree = np.transpose(np.sum(Cc2, axis=1))
+    # coldegree = np.sum(Cc2, axis=0)
     
     # degree = rowdegree + coldegree
     # replace this with (rowdegree + coldegree)/2
@@ -84,14 +84,14 @@ def run_local_coupling_forward_Xk(brain, params, freqs, PSD, SC, rois_with_MEG, 
     # eps = min([i for i in degree if i > 0])
     
     # L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
-    L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)))
-    Cc3 = np.matmul(np.diag(L23), Cc2)
+#     L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)))
+#     Cc3 = np.matmul(np.diag(L23), Cc2)
     
-    Cc3 = Cc3/np.linalg.norm(Cc3)  
+#     Cc3 = Cc3/np.linalg.norm(Cc3)  
     
-    Cc3 = Cc3[0:len(rois_with_MEG),0:len(rois_with_MEG)]
+#     Cc3 = Cc3[0:len(rois_with_MEG),0:len(rois_with_MEG)]
     
-    func1 = np.matmul(Cc3, summed_PSD)
+    func1 = np.matmul(Cc2, summed_PSD)
     cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
     return cost_func
 
@@ -156,29 +156,29 @@ def run_local_coupling_forward_Xk_db(brain, params, freqs, PSD, SC, rois_with_ME
     # eps = min([i for i in degree if i > 0])
     degree = (rowdegree + coldegree)/2
     eps = np.percentile(degree,5)
-    w_spat = 10
+    w_spat = 1
     nroi = len(rois_with_MEG)
     L22 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
     Cc2 = np.matmul(np.diag(L22), C)[0:68,0:68] + w_spat*np.eye(nroi)
     
-    Cc2 = Cc2/np.linalg.norm(Cc2)
+    # Cc2 = Cc2/np.linalg.norm(Cc2)
     
 #     Extra lines to match previous spatial R
-    rowdegree = np.transpose(np.sum(Cc2, axis=1))
-    coldegree = np.sum(Cc2, axis=0)
+    # rowdegree = np.transpose(np.sum(Cc2, axis=1))
+    # coldegree = np.sum(Cc2, axis=0)
     
     # degree = rowdegree + coldegree
     
     # eps = min([i for i in degree if i > 0])
     # L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)) + eps)
-    L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)))
-    Cc3 = np.matmul(np.diag(L23), Cc2)
+    # L23 = np.divide(1, np.sqrt(np.multiply(rowdegree, coldegree)))
+    # Cc3 = np.matmul(np.diag(L23), Cc2)
     
-    Cc3 = Cc3/np.linalg.norm(Cc3)  
+    # Cc3 = Cc3/np.linalg.norm(Cc3)  
     
-    Cc3 = Cc3[0:len(rois_with_MEG),0:len(rois_with_MEG)]
+    # Cc3 = Cc3[0:len(rois_with_MEG),0:len(rois_with_MEG)]
     
-    func1 = np.matmul(Cc3, summed_PSD)
+    func1 = np.matmul(Cc2, summed_PSD)
     cost_func =  np.matmul(np.transpose(eigvec_summed),func1)
     return cost_func
 
