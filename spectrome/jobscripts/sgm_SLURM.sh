@@ -1,12 +1,12 @@
 #!/bin/bash
 #### Specify job name
-#SBATCH -J orgSGM_hcp_newspatcost
+#SBATCH -J orgSGM_N2_newspatcost
 #### Output file
 #SBATCH -o /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".out
 #### Error file
 #SBATCH -e /data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/"%x"_"%j".err
 #### number of cores 
-#SBATCH -n 36
+#SBATCH -n 18
 #### Specify queue
 #SBATCH --partition=long
 #### --nodelist=oakland,piedmont,novato,quartzhill
@@ -29,6 +29,6 @@ nproc --all
 
 which python
 
-python -u ../scripts/SGM_fit_org_hcp.py
+python -u ../scripts/SGM_fit_org_sleep_DK_N2.py
 
 [[ -n "$SLURM_JOB_ID" ]] && sstat --format="JobID,AveCPU,MaxRSS,MaxPages,MaxDiskRead,MaxDiskWrite" -j "$SLURM_JOB_ID"

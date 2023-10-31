@@ -21,7 +21,7 @@ from functools import partial
 start = time.time()
 
 
-sleep = loadmat('/protected/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_50Hz_DK_relative_reordered.mat')
+sleep = loadmat('/data/rajlab1/user_data/parul/sleep_files/PSD_pmtm_50Hz_DK_relative_reordered.mat')
 print("Loaded sleep data", flush= True)
 
 Data = sleep['PSD_reordered']
@@ -83,7 +83,7 @@ brain.reducedConnectome = brain.connectome
 print(brain.reducedConnectome.shape)
 print(brain.distance_matrix.shape)
 
-mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 
 # Parameter bounds for optimization
 # bnds = ((5.0,20.0), (5.0,20.0), (0.1,1.0), (5.0,20.0), (0.5,5.0), (0.5,5.0), (5.0,20.0))
@@ -274,7 +274,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_spatcost_5percentile_db/sleep_wake_DK_oldcost_45Hz.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_newspatcost_5percentile/sleep_wake_DK_45Hz.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
   
