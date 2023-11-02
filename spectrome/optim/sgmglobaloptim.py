@@ -47,7 +47,7 @@ def global_corr(x, brain, F_ind_db, F_ind, rois_with_MEG, fvec):
     ri_corr = np.mean(corrs)
 
 #     sp_corr, _, _ = runforward_spatialcorrelation.run_local_coupling_forward_Xk(brain, brain.ntf_params, fvec, F_ind, 86, rois_with_MEG, "alpha")
-    weighted_corr = runforward_spatialcorrelation_topalpha.run_local_coupling_forward_Xk(brain, brain.ntf_params, fvec, F_ind, 86, rois_with_MEG, "alpha")
+    weighted_corr = runforward_spatialcorrelation_topalpha.run_local_coupling_forward_Xk_db(brain, brain.ntf_params, fvec, F_ind, 86, rois_with_MEG, "alpha")
 
     return -ri_corr - weighted_corr
     # return -ri_corr - (1- weighted_corr)
