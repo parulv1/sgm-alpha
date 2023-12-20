@@ -10,6 +10,8 @@ from scipy.stats import pearsonr
 from ..utils import functions, path
 from ..brain import Brain
 
+from statsmodels.stats import weightstats
+
 
 # def global_corr(x, brain, F_ind, rois_with_MEG, fvec, lpf):
 # Following def with reordered spectra
@@ -42,14 +44,24 @@ def global_corr(x, brain, F_ind_db, F_ind, rois_with_MEG, fvec):
         freq_out[p,:] = functions.mag2db(np.abs(freq_mdl[p,:]))
 
                                          
+    w1 = np.ones((len(fvec)))
+    w1[0:15] = 2
+                                         
     corrs = np.zeros(len(freq_out))
     for c in np.arange(0, len(freq_out)):
-        corrs[c] = pearsonr(F_ind_db[c,:], freq_out[c,:])[0]
+        d1 = weightstats.DescrStatsW(F_ind_db[c,:],weights=w1)
+        d2 = weightstats.DescrStatsW(freq_out[c,:],weights=w1)
+        
+        cov_matrix = np.cov(d1.data, d2.data, aweights=d1.weights)
+
+        corr_coefficient = cov_matrix[0, 1] / np.sqrt(cov_matrix[0, 0] * cov_matrix[1, 1])
+        corrs[c] = corr_coefficient
+        # corrs[c] = pearsonr(F_ind_db[c,:], freq_out[c,:])[0]
 
     ri_corr = np.mean(corrs)
 
 #     sp_corr, _, _ = runforward_spatialcorrelation.run_local_coupling_forward_Xk(brain, brain.ntf_params, fvec, F_ind, 86, rois_with_MEG, "alpha")
     weighted_corr = runforward_spatialcorrelation_pearson.run_local_coupling_forward_Xk(brain, brain.ntf_params, fvec, F_ind, 86, rois_with_MEG, "alpha")
 
-    return -ri_corr - weighted_corr
+    return -ri_corr - 0.3*weighted_corr
     # return -ri_corr - (1- weighted_corr)
