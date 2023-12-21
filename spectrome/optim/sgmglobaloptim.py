@@ -45,7 +45,7 @@ def global_corr(x, brain, F_ind_db, F_ind, rois_with_MEG, fvec):
 
                                          
     w1 = np.ones((len(fvec)))
-    w1[0:15] = 2
+    w1[0:10] = 2
                                          
     corrs = np.zeros(len(freq_out))
     for c in np.arange(0, len(freq_out)):
