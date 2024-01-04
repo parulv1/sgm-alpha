@@ -1,7 +1,7 @@
 #!/bin/bash
 #$ -cwd
 #### Specify job name
-#$ -N orgSGM_N2_oldcost_5per_db
+#$ -N orgSGM_mica_5per_03spat
 #### Output file
 #$ -o /protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/jobout/$JOB_NAME_$JOB_ID.out
 #### Error file
@@ -31,7 +31,7 @@ nproc --all
 
 which python 
 
-python -u ../scripts/SGM_fit_org_sleep_DK_N2.py
+python -u ../scripts/SGM_fit_org_mica.py
 
 # [[ -n "$JOB_ID" ]] && /netopt/sge_n1ge6/bin/lx24-amd64/qstat -j "$JOB_ID"
 [[ -n "$JOB_ID" ]] && qstat -j "$JOB_ID"

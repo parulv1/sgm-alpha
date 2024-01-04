@@ -55,7 +55,7 @@ ind_psd = ind_psd_xr.values
 # SC_volnorm_template = sc_fa_tinnitus["sc_tinnitus"][0][0][4]
 
 
-sc_dk_mica = loadmat("/data/rajlab1/shared_data/datasets/MICA/mica_sc_dt_aparc_nocorpuscollusum.mat")
+sc_dk_mica = loadmat("/protected/data/rajlab1/shared_data/datasets/MICA/mica_sc_dt_aparc_nocorpuscollusum.mat")
 
 conn = sc_dk_mica['SC_mean']
 dist = sc_dk_mica['DT_mean']
@@ -76,7 +76,7 @@ brain.reducedConnectome = brain.connectome
 # brain.bi_symmetric_c_mica()
 # brain.reduce_extreme_dir()
 
-mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/DK_MICA_qT1_mean_normalized.mat')['qT1_mean'])
 
 fvec = ind_psd_xr["frequencies"].values
@@ -250,7 +250,7 @@ def optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds):
     # print(opt_res["message"])
     
     
-    rcorr, spcorr = sgmglobaloptim_pearson.global_corr(opt_res["x"], brain, F_ind_db, F_ind, rois_with_MEG, fvec)
+    rcorr, rcorr2, spcorr = sgmglobaloptim_pearson.global_corr(opt_res["x"], brain, F_ind_db, F_ind, rois_with_MEG, fvec)
     
 
     return [
@@ -323,7 +323,7 @@ if __name__ == '__main__':
     # print('PID', os.getpid())
 
     #Generate processes equal to the number of cores
-    pool = multiprocessing.Pool(36)
+    pool = multiprocessing.Pool(18)
 
     # print('doing param optimization with 01 correlation weighted with structural connectome directly with model out')
     print('this is with original model but macro stable')
@@ -334,7 +334,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_pearson_5percentile_exps/orgSGM_chang_micatemplate_weightedcorr_10fvec_03spat.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_psd2, r_sp, sub, flag, status, success")
+    np.savetxt("/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_pearson_5percentile_exps/orgSGM_chang_micatemplate_weightedcorr_10fvec_03spat.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_psd2, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 
