@@ -263,6 +263,7 @@ def optsgm(cdk,psd,rois_with_MEG,fvec,s,bnds):
         tauC,
         -opt_res["fun"],
         rcorr,
+        rcorr2,
         spcorr,
         s,
         f,
@@ -333,7 +334,7 @@ if __name__ == '__main__':
     res  = pool.map(func,paramlist)
     # pool.close()
     res2 = np.array(res)
-    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_pearson_5percentile_exps/orgSGM_chang_ind_weightedcorr_10fvec_03spat.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_sp, sub, flag, status, success")
+    np.savetxt("/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_pearson_5percentile_exps/orgSGM_chang_ind_weightedcorr_10fvec_03spat.csv", res2, delimiter=",",header="taue, taui, alpha, speed, gei, gii, tauC, r_tot, r_psd, r_psd2, r_sp, sub, flag, status, success")
 
     print("Finished Chang data optimization for MSGM")
 

@@ -3,7 +3,7 @@ from ..forward import runforward
 # from ..forward import runforward_spatialcorrelation_mahalanobis
 # from ..forward import runforward_spatialcorrelation_old
 # from ..forward import runforward_spatialcorrelation_topalpha
-# from ..forward import runforward_spatialcorrelation_adjacency 
+# from ..forward import runforward_spatialcorrelation_adjacency
 from ..forward import runforward_spatialcorrelation_pearson
 from scipy.signal import firls
 from scipy.stats import pearsonr
@@ -11,7 +11,6 @@ from ..utils import functions, path
 from ..brain import Brain
 
 from statsmodels.stats import weightstats
-
 
 # def global_corr(x, brain, F_ind, rois_with_MEG, fvec, lpf):
 # Following def with reordered spectra
@@ -43,7 +42,6 @@ def global_corr(x, brain, F_ind_db, F_ind, rois_with_MEG, fvec):
     for p in np.arange(0,len(freq_mdl)):
         freq_out[p,:] = functions.mag2db(np.abs(freq_mdl[p,:]))
 
-                                         
     w1 = np.ones((len(fvec)))
     w1[0:10] = 2
                                          
