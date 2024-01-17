@@ -82,7 +82,7 @@ brain.reducedConnectome = ind_conn_median
 # brain.bi_symmetric_c_mica()
 # brain.reduce_extreme_dir()
 
-mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
+mica_micro_intensity = np.squeeze(loadmat('/protected/data/rajlab1/shared_data/datasets/MICA/micro_intensity_mean.mat')['micro_intensity_mean'])
 # mica_micro_intensity = np.squeeze(loadmat('/data/rajlab1/shared_data/datasets/MICA/DK_MICA_qT1_mean_normalized.mat')['qT1_mean'])
 
 fvec = ind_psd_xr["frequencies"].values
@@ -338,7 +338,7 @@ if __name__ == '__main__':
     # pool.close()
     res2 = np.array(res)
     
-    filename = f'/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_pearson_5percentile_null/orgSGM.p'
+    filename = f'/protected/data/rajlab1/user_data/parul/spectromeP_results/results_globalSGM/alpha_experiments/noreducedC_Cnormalized_pearson_5percentile_null/orgSGM.p'
 
     with open(filename, 'wb') as f:
         pkl.dump(res2, f)
